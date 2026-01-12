@@ -1,10 +1,16 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login, logout, authenticate
+from django.contrib import messages
 from django.http import Http404
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, RegisterForm, LoginForm
 
 # Create your views here.
+
+def home(request):
+    return render(request, 'blog/home.html')
+
 
 def post_list(request):
     posts = Post.objects.filter(status=1).order_by('-created_on')
@@ -33,3 +39,49 @@ def edit_post(request, slug):
         form = PostForm(instance=post)
     
     return render(request, 'blog/edit_post.html', {'form': form, 'post': post})
+
+def home_page_view(request):
+    return render(request, 'blog/home.html')
+
+
+def register(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            messages.success(request, f'Welcome {user.username}! Your account has been created.')
+            return redirect('home')
+    else:
+        form = RegisterForm()
+    
+    return render(request, 'blog/register.html', {'form': form})
+
+
+def user_login(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, f'Welcome back, {username}!')
+                return redirect('home')
+    else:
+        form = LoginForm()
+    
+    return render(request, 'blog/login.html', {'form': form})
+
+
+def user_logout(request):
+    logout(request)
+    messages.info(request, 'You have been logged out.')
+    return redirect('home')

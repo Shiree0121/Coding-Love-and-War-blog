@@ -1,0 +1,162 @@
+{% extends "blog/base.html" %}
+
+{% block title %}
+Login - Coding, Love & War
+{% endblock %}
+
+{% block extra_css %}
+<style>
+  .auth-container {
+    max-width: 480px;
+    margin: 80px auto;
+    padding: 0 24px;
+  }
+
+  .auth-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding: 48px 40px;
+  }
+
+  .auth-card h2 {
+    font-size: 28px;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .auth-card p {
+    text-align: center;
+    color: #5a5046;
+    margin-bottom: 32px;
+  }
+
+  .form-group {
+    margin-bottom: 24px;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid #e8ddd0;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    font-family: Georgia, serif;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #5a7a78;
+    box-shadow: 0 0 0 3px rgba(90, 122, 120, 0.1);
+  }
+
+  .errorlist {
+    list-style: none;
+    padding: 0;
+    margin: 8px 0 0 0;
+  }
+
+  .errorlist li {
+    color: #dc3545;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+
+  .btn-submit {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #5a7a78 0%, #4a6a68 100%);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+  }
+
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(90, 122, 120, 0.25);
+  }
+
+  .auth-footer {
+    text-align: center;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid #e8ddd0;
+  }
+
+  .auth-footer a {
+    color: #5a7a78;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .auth-footer a:hover {
+    color: #4a6a68;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Welcome Back</h2>
+    <p>Sign in to your account to continue</p>
+
+    <form method="post">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="{{ form.username.id_for_label }}">Username</label>
+        {{ form.username }}
+        {% if form.username.errors %}
+          <ul class="errorlist">
+            {% for error in form.username.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.password.id_for_label }}">Password</label>
+        {{ form.password }}
+        {% if form.password.errors %}
+          <ul class="errorlist">
+            {% for error in form.password.errors %}
+              <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+
+      {% if form.non_field_errors %}
+        <ul class="errorlist">
+          {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      <button type="submit" class="btn-submit">Sign In</button>
+    </form>
+
+    <div class="auth-footer">
+      Don't have an account? <a href="{% url 'register' %}">Sign Up</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

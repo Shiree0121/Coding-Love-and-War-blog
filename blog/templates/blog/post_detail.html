@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>{{ post.title }}</title>
-    <style>
+{% extends "blog/base.html" %}
+
+{% block title %}{{ post.title }} - Coding, Love & War{% endblock %}
+
+{% block extra_css %}
+<style>
       * {
         margin: 0;
         padding: 0;
@@ -336,13 +337,9 @@
         }
       }
     </style>
-  </head>
-  <body>
-    <div class="back-link">
-      <a href="{% url 'post_list' %}">← Back to Posts</a>
-    </div>
+{% endblock %}
 
-    <div class="container">
+{% block content %}
       <div class="post-header">
         <h1>{{ post.title }}</h1>
         <div class="meta">
@@ -533,5 +530,4 @@
         }
       });
     </script>
-  </body>
-</html>
+{% endblock %}
