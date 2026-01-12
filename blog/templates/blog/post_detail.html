@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ post.title }}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        max-width: 800px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      .meta {
+        color: #666;
+        margin-bottom: 20px;
+      }
+      .content {
+        line-height: 1.6;
+      }
+      hr {
+        margin: 30px 0;
+      }
+      .comments {
+        margin-top: 30px;
+      }
+      .comment {
+        padding: 10px;
+        margin: 10px 0;
+        border-left: 3px solid #0066cc;
+        background: #f9f9f9;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="{% url 'post_list' %}">← Back to Posts</a>
+    </div>
+
+    <h1>{{ post.title }}</h1>
+    <div class="meta">
+      <strong>By {{ post.author.username }}</strong> | {{
+      post.created_on|date:"F j, Y" }}
+    </div>
+
+    {% if post.featured_image %}
+    <img
+      src="{{ post.featured_image.url }}"
+      alt="{{ post.title }}"
+      style="max-width: 100%"
+    />
+    {% endif %}
+
+    <div class="content">{{ post.content }}</div>
+
+    <hr />
+
+    <div class="comments">
+      <h3>Comments ({{ post.comments.count }})</h3>
+      {% for comment in post.comments.all %} {% if comment.approved %}
+      <div class="comment">
+        <strong>{{ comment.author.username }}</strong>
+        <small>{{ comment.created_on|date:"F j, Y H:i" }}</small>
+        <p>{{ comment.body }}</p>
+      </div>
+      {% endif %} {% empty %}
+      <p>No comments yet. Be the first to comment!</p>
+      {% endfor %}
+    </div>
+  </body>
+</html>

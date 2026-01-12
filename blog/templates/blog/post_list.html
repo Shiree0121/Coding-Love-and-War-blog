@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Blog Posts</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        margin: 10px 0;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+      a {
+        color: #0066cc;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      small {
+        color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Blog Posts</h1>
+    <ul>
+      {% for post in posts %}
+      <li>
+        <a href="{% url 'post_detail' slug=post.slug %}"
+          ><strong>{{ post.title }}</strong></a
+        >
+        <br />
+        <small>{{ post.created_on|date:"F j, Y" }}</small>
+        <p>{{ post.excerpt|truncatewords:20 }}</p>
+      </li>
+      {% empty %}
+      <li>No published posts yet.</li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>
