@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Edit Post - {{ post.title }}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        max-width: 800px;
+      }
+      .back-link {
+        margin-bottom: 20px;
+      }
+      h1 {
+        color: #333;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input[type="text"],
+      textarea,
+      select,
+      input[type="file"] {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-family: Arial, sans-serif;
+        box-sizing: border-box;
+      }
+      textarea {
+        resize: vertical;
+      }
+      button {
+        background-color: #0066cc;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-right: 10px;
+      }
+      button:hover {
+        background-color: #0052a3;
+      }
+      .cancel-btn {
+        background-color: #666;
+      }
+      .cancel-btn:hover {
+        background-color: #555;
+      }
+      .button-group {
+        margin-top: 20px;
+      }
+      .error {
+        color: #d9534f;
+        padding: 10px;
+        background-color: #f2dede;
+        border: 1px solid #ebccd1;
+        border-radius: 4px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="back-link">
+      <a href="{% url 'post_detail' slug=post.slug %}">← Back to Post</a>
+    </div>
+
+    <h1>Edit Post</h1>
+
+    {% if form.non_field_errors %}
+    <div class="error">
+      {% for error in form.non_field_errors %}
+      <p>{{ error }}</p>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label for="{{ form.title.id_for_label }}">Title:</label>
+        {{ form.title }} {% if form.title.errors %}
+        <div class="error">
+          {% for error in form.title.errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.content.id_for_label }}">Content:</label>
+        {{ form.content }} {% if form.content.errors %}
+        <div class="error">
+          {% for error in form.content.errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.excerpt.id_for_label }}">Excerpt (optional):</label>
+        {{ form.excerpt }} {% if form.excerpt.errors %}
+        <div class="error">
+          {% for error in form.excerpt.errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.featured_image.id_for_label }}"
+          >Featured Image (optional):</label
+        >
+        {{ form.featured_image }} {% if post.featured_image %}
+        <p>
+          <small
+            >Current image:
+            <a href="{{ post.featured_image.url }}"
+              >{{ post.featured_image.name }}</a
+            ></small
+          >
+        </p>
+        {% endif %} {% if form.featured_image.errors %}
+        <div class="error">
+          {% for error in form.featured_image.errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label for="{{ form.status.id_for_label }}">Status:</label>
+        {{ form.status }} {% if form.status.errors %}
+        <div class="error">
+          {% for error in form.status.errors %}
+          <p>{{ error }}</p>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="button-group">
+        <button type="submit">Save Changes</button>
+        <a href="{% url 'post_detail' slug=post.slug %}"
+          ><button type="button" class="cancel-btn">Cancel</button></a
+        >
+      </div>
+    </form>
+  </body>
+</html>

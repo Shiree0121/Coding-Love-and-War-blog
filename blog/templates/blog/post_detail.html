@@ -33,6 +33,118 @@
         border-left: 3px solid #0066cc;
         background: #f9f9f9;
       }
+      .calendar-btn {
+        background-color: #0066cc;
+        color: white;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .calendar-btn:hover {
+        background-color: #0052a3;
+      }
+      .calendar-popup {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 1000;
+        padding: 20px;
+        max-width: 400px;
+      }
+      .calendar-popup.show {
+        display: block;
+      }
+      .calendar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3);
+        z-index: 999;
+      }
+      .calendar-overlay.show {
+        display: block;
+      }
+      .calendar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+      .calendar-header h3 {
+        margin: 0;
+        font-size: 18px;
+      }
+      .calendar-header button {
+        background: none;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+      }
+      .calendar-header button:hover {
+        background-color: #eee;
+        border-radius: 4px;
+      }
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 5px;
+      }
+      .calendar-day-header {
+        text-align: center;
+        font-weight: bold;
+        color: #666;
+        padding: 5px;
+        font-size: 12px;
+      }
+      .calendar-day {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+      .calendar-day.other-month {
+        color: #ccc;
+        cursor: default;
+      }
+      .calendar-day.today {
+        background-color: #0066cc;
+        color: white;
+        font-weight: bold;
+      }
+      .calendar-day:not(.other-month):not(.today):hover {
+        background-color: #e8f0ff;
+      }
+      .calendar-datetime {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid #ddd;
+        text-align: center;
+        font-size: 14px;
+        color: #333;
+      }
+      .calendar-datetime strong {
+        display: block;
+        font-size: 16px;
+        margin-bottom: 5px;
+      }
     </style>
   </head>
   <body>
@@ -44,6 +156,12 @@
     <div class="meta">
       <strong>By {{ post.author.username }}</strong> | {{
       post.created_on|date:"F j, Y" }}
+      <button class="calendar-btn" onclick="openCalendar()">
+        📅 View Calendar
+      </button>
+      {% if user == post.author %} |
+      <a href="{% url 'edit_post' slug=post.slug %}">Edit</a>
+      {% endif %}
     </div>
 
     {% if post.featured_image %}
@@ -70,5 +188,151 @@
       <p>No comments yet. Be the first to comment!</p>
       {% endfor %}
     </div>
+
+    <!-- Calendar Popup -->
+    <div
+      class="calendar-overlay"
+      id="calendarOverlay"
+      onclick="closeCalendar()"
+    ></div>
+    <div class="calendar-popup" id="calendarPopup">
+      <div class="calendar-header">
+        <button onclick="previousMonth()">&lt;</button>
+        <h3 id="monthYear"></h3>
+        <button onclick="nextMonth()">&gt;</button>
+        <button onclick="closeCalendar()" style="margin-left: 10px">
+          &times;
+        </button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+      <div class="calendar-datetime">
+        <strong id="selectedDate"></strong>
+        <div id="selectedTime"></div>
+      </div>
+    </div>
+
+    <script>
+      // Post date information
+      const postDate = new Date('{{ post.created_on|date:"Y-m-d H:i" }}');
+      const postYear = {{ post.created_on|date:"Y" }};
+      const postMonth = {{ post.created_on|date:"n" }} - 1;
+      const postDay = {{ post.created_on|date:"j" }};
+      const postHour = {{ post.created_on|date:"H" }};
+      const postMinute = {{ post.created_on|date:"i" }};
+
+      let currentMonth = postMonth;
+      let currentYear = postYear;
+
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      function openCalendar() {
+        currentMonth = postMonth;
+        currentYear = postYear;
+        document.getElementById("calendarOverlay").classList.add("show");
+        document.getElementById("calendarPopup").classList.add("show");
+        renderCalendar();
+      }
+
+      function closeCalendar() {
+        document.getElementById("calendarOverlay").classList.remove("show");
+        document.getElementById("calendarPopup").classList.remove("show");
+      }
+
+      function previousMonth() {
+        currentMonth--;
+        if (currentMonth < 0) {
+          currentMonth = 11;
+          currentYear--;
+        }
+        renderCalendar();
+      }
+
+      function nextMonth() {
+        currentMonth++;
+        if (currentMonth > 11) {
+          currentMonth = 0;
+          currentYear++;
+        }
+        renderCalendar();
+      }
+
+      function renderCalendar() {
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const daysInPrevMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+        document.getElementById("monthYear").textContent = `${monthNames[currentMonth]} ${currentYear}`;
+
+        const calendarGrid = document.getElementById("calendarGrid");
+        calendarGrid.innerHTML = "";
+
+        // Day headers
+        const dayHeaders = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        dayHeaders.forEach(day => {
+          const header = document.createElement("div");
+          header.className = "calendar-day-header";
+          header.textContent = day;
+          calendarGrid.appendChild(header);
+        });
+
+        // Previous month's days
+        for (let i = firstDay - 1; i >= 0; i--) {
+          const day = document.createElement("div");
+          day.className = "calendar-day other-month";
+          day.textContent = daysInPrevMonth - i;
+          calendarGrid.appendChild(day);
+        }
+
+        // Current month's days
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayDiv = document.createElement("div");
+          dayDiv.className = "calendar-day";
+
+          if (day === postDay && currentMonth === postMonth && currentYear === postYear) {
+            dayDiv.classList.add("today");
+          }
+
+          dayDiv.textContent = day;
+          dayDiv.onclick = () => selectDate(day);
+          calendarGrid.appendChild(dayDiv);
+        }
+
+        // Next month's days
+        const totalCells = calendarGrid.children.length - 7; // Subtract day headers
+        const remainingCells = 42 - totalCells;
+        for (let day = 1; day <= remainingCells; day++) {
+          const dayDiv = document.createElement("div");
+          dayDiv.className = "calendar-day other-month";
+          dayDiv.textContent = day;
+          calendarGrid.appendChild(dayDiv);
+        }
+
+        // Show post date info
+        updateDateDisplay();
+      }
+
+      function selectDate(day) {
+        // Update to show selected date (though we always show post date)
+        updateDateDisplay();
+      }
+
+      function updateDateDisplay() {
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const dateStr = postDate.toLocaleDateString('en-US', dateOptions);
+        const timeStr = `${String(postHour).padStart(2, '0')}:${String(postMinute).padStart(2, '0')}`;
+
+        document.getElementById("selectedDate").textContent = dateStr;
+        document.getElementById("selectedTime").textContent = `Time: ${timeStr}`;
+      }
+
+      // Close calendar when clicking outside of it
+      document.addEventListener('keydown', function(event) {
+        if (event.key === "Escape") {
+          closeCalendar();
+        }
+      });
+    </script>
   </body>
 </html>
