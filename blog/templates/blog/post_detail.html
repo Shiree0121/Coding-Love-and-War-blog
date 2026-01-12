@@ -3,48 +3,200 @@
   <head>
     <title>{{ post.title }}</title>
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
-        max-width: 800px;
+        font-family: "Georgia", "Garamond", serif;
+        background: linear-gradient(135deg, #f5f1e8 0%, #e8ddd0 100%);
+        color: #2c2c2c;
+        line-height: 1.8;
+        min-height: 100vh;
       }
+
       .back-link {
-        margin-bottom: 20px;
+        padding: 20px 40px;
+        background: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       }
+
+      .back-link a {
+        color: #6b5b3a;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .back-link a:hover {
+        color: #8b7355;
+      }
+
+      .container {
+        max-width: 750px;
+        margin: 40px auto;
+        padding: 0 20px;
+        background: white;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .post-header {
+        padding: 50px 40px 30px;
+        border-bottom: 1px solid #f0ede5;
+      }
+
       h1 {
-        color: #333;
-      }
-      .meta {
-        color: #666;
+        font-size: 42px;
+        color: #1a1a1a;
         margin-bottom: 20px;
+        line-height: 1.2;
+        font-weight: 700;
+        letter-spacing: -0.5px;
       }
-      .content {
-        line-height: 1.6;
-      }
-      hr {
-        margin: 30px 0;
-      }
-      .comments {
-        margin-top: 30px;
-      }
-      .comment {
-        padding: 10px;
-        margin: 10px 0;
-        border-left: 3px solid #0066cc;
-        background: #f9f9f9;
-      }
-      .calendar-btn {
-        background-color: #0066cc;
-        color: white;
-        padding: 5px 10px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
+
+      .meta {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        color: #8b8b8b;
         font-size: 14px;
       }
-      .calendar-btn:hover {
-        background-color: #0052a3;
+
+      .meta strong {
+        color: #2c2c2c;
+        font-weight: 600;
       }
+
+      .meta-divider {
+        width: 4px;
+        height: 4px;
+        background: #c9b9a3;
+        border-radius: 50%;
+      }
+
+      .calendar-btn {
+        background: linear-gradient(135deg, #8b7355 0%, #6b5b3a 100%);
+        color: white;
+        padding: 8px 16px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(139, 115, 85, 0.2);
+      }
+
+      .calendar-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(139, 115, 85, 0.3);
+      }
+
+      .edit-link a {
+        color: #8b7355;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .edit-link a:hover {
+        color: #6b5b3a;
+        text-decoration: underline;
+      }
+
+      .featured-image-wrapper {
+        width: 100%;
+        background: #f9f7f3;
+        overflow: hidden;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+
+      .post-content {
+        padding: 40px;
+      }
+
+      .content {
+        font-size: 16px;
+        line-height: 1.8;
+        color: #3a3a3a;
+        margin-bottom: 40px;
+      }
+
+      .content p {
+        margin-bottom: 20px;
+      }
+
+      hr {
+        border: none;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #e8ddd0, transparent);
+        margin: 40px 0;
+      }
+
+      .comments-section {
+        margin-top: 40px;
+        padding-top: 40px;
+        border-top: 1px solid #f0ede5;
+      }
+
+      .comments-section h3 {
+        font-size: 20px;
+        color: #1a1a1a;
+        margin-bottom: 25px;
+        font-weight: 600;
+      }
+
+      .comment {
+        padding: 20px;
+        margin-bottom: 20px;
+        border-left: 4px solid #c9b9a3;
+        background: #faf9f6;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .comment:hover {
+        background: #f5f1e8;
+        border-left-color: #8b7355;
+      }
+
+      .comment strong {
+        display: block;
+        color: #2c2c2c;
+        font-weight: 600;
+        margin-bottom: 5px;
+      }
+
+      .comment small {
+        color: #a0a0a0;
+        font-size: 12px;
+      }
+
+      .comment p {
+        margin-top: 10px;
+        color: #3a3a3a;
+        font-size: 15px;
+      }
+
+      .no-comments {
+        text-align: center;
+        padding: 30px;
+        color: #a0a0a0;
+        font-style: italic;
+      }
+
+      /* Calendar Popup Styles */
       .calendar-popup {
         display: none;
         position: fixed;
@@ -59,9 +211,11 @@
         padding: 20px;
         max-width: 400px;
       }
+
       .calendar-popup.show {
         display: block;
       }
+
       .calendar-overlay {
         display: none;
         position: fixed;
@@ -72,19 +226,23 @@
         background-color: rgba(0, 0, 0, 0.3);
         z-index: 999;
       }
+
       .calendar-overlay.show {
         display: block;
       }
+
       .calendar-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 15px;
       }
+
       .calendar-header h3 {
         margin: 0;
         font-size: 18px;
       }
+
       .calendar-header button {
         background: none;
         border: none;
@@ -94,15 +252,18 @@
         width: 30px;
         height: 30px;
       }
+
       .calendar-header button:hover {
         background-color: #eee;
         border-radius: 4px;
       }
+
       .calendar-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         gap: 5px;
       }
+
       .calendar-day-header {
         text-align: center;
         font-weight: bold;
@@ -110,6 +271,7 @@
         padding: 5px;
         font-size: 12px;
       }
+
       .calendar-day {
         width: 40px;
         height: 40px;
@@ -120,18 +282,22 @@
         cursor: pointer;
         font-size: 14px;
       }
+
       .calendar-day.other-month {
         color: #ccc;
         cursor: default;
       }
+
       .calendar-day.today {
         background-color: #0066cc;
         color: white;
         font-weight: bold;
       }
+
       .calendar-day:not(.other-month):not(.today):hover {
         background-color: #e8f0ff;
       }
+
       .calendar-datetime {
         margin-top: 15px;
         padding-top: 15px;
@@ -140,10 +306,34 @@
         font-size: 14px;
         color: #333;
       }
+
       .calendar-datetime strong {
         display: block;
         font-size: 16px;
         margin-bottom: 5px;
+      }
+
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 28px;
+        }
+
+        .post-header {
+          padding: 30px 20px;
+        }
+
+        .post-content {
+          padding: 20px;
+        }
+
+        .meta {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .container {
+          margin: 20px auto;
+        }
       }
     </style>
   </head>
@@ -152,41 +342,50 @@
       <a href="{% url 'post_list' %}">← Back to Posts</a>
     </div>
 
-    <h1>{{ post.title }}</h1>
-    <div class="meta">
-      <strong>By {{ post.author.username }}</strong> | {{
-      post.created_on|date:"F j, Y" }}
-      <button class="calendar-btn" onclick="openCalendar()">
-        📅 View Calendar
-      </button>
-      {% if user == post.author %} |
-      <a href="{% url 'edit_post' slug=post.slug %}">Edit</a>
-      {% endif %}
-    </div>
-
-    {% if post.featured_image %}
-    <img
-      src="{{ post.featured_image.url }}"
-      alt="{{ post.title }}"
-      style="max-width: 100%"
-    />
-    {% endif %}
-
-    <div class="content">{{ post.content }}</div>
-
-    <hr />
-
-    <div class="comments">
-      <h3>Comments ({{ post.comments.count }})</h3>
-      {% for comment in post.comments.all %} {% if comment.approved %}
-      <div class="comment">
-        <strong>{{ comment.author.username }}</strong>
-        <small>{{ comment.created_on|date:"F j, Y H:i" }}</small>
-        <p>{{ comment.body }}</p>
+    <div class="container">
+      <div class="post-header">
+        <h1>{{ post.title }}</h1>
+        <div class="meta">
+          <strong>By {{ post.author.username }}</strong>
+          <div class="meta-divider"></div>
+          <span>{{ post.created_on|date:"F j, Y" }}</span>
+          <button class="calendar-btn" onclick="openCalendar()">
+            📅 View Calendar
+          </button>
+          {% if user == post.author %}
+          <div class="edit-link">
+            | <a href="{% url 'edit_post' slug=post.slug %}">Edit</a>
+          </div>
+          {% endif %}
+        </div>
       </div>
-      {% endif %} {% empty %}
-      <p>No comments yet. Be the first to comment!</p>
-      {% endfor %}
+
+      {% if post.featured_image %}
+      <div class="featured-image-wrapper">
+        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" />
+      </div>
+      {% endif %}
+
+      <div class="post-content">
+        <div class="content">{{ post.content }}</div>
+
+        <hr />
+
+        <div class="comments-section">
+          <h3>Comments ({{ post.comments.count }})</h3>
+          {% for comment in post.comments.all %} {% if comment.approved %}
+          <div class="comment">
+            <strong>{{ comment.author.username }}</strong>
+            <small>{{ comment.created_on|date:"F j, Y H:i" }}</small>
+            <p>{{ comment.body }}</p>
+          </div>
+          {% endif %} {% empty %}
+          <div class="no-comments">
+            <p>No comments yet. Be the first to comment!</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
 
     <!-- Calendar Popup -->
