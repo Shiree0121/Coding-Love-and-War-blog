@@ -129,6 +129,24 @@
     transform: translateY(-2px);
   }
 
+  .vote-stats {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+    color: #7e725d;
+    align-items: center;
+  }
+
+  .vote-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .vote-stat .icon {
+    font-size: 14px;
+  }
+
   .empty {
     text-align: center;
     padding: 60px 24px;
@@ -167,6 +185,16 @@
         <span>{{ post.created_on|date:"F j, Y" }}</span>
         <div class="dot"></div>
         <span>by {{ post.author.username }}</span>
+      </div>
+      <div class="vote-stats">
+        <span class="vote-stat">
+          <span class="icon">👍</span>
+          <span>{{ post.total_likes }}</span>
+        </span>
+        <span class="vote-stat">
+          <span class="icon">👎</span>
+          <span>{{ post.total_dislikes }}</span>
+        </span>
       </div>
       <p class="excerpt">
         {{ post.excerpt|default:post.content|truncatewords:24 }}

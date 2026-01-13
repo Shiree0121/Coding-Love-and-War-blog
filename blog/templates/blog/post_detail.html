@@ -359,6 +359,80 @@
         font-size: 14px;
       }
 
+      /* Like/Dislike Styles */
+      .vote-section {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        padding: 25px 0;
+        border-top: 1px solid #f0ede5;
+        border-bottom: 1px solid #f0ede5;
+        margin: 30px 0;
+      }
+
+      .vote-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 20px;
+        border: 2px solid #e8ddd0;
+        background: white;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        color: #5a5046;
+      }
+
+      .vote-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .vote-btn.liked {
+        background: linear-gradient(135deg, #5a7a78 0%, #4a6a68 100%);
+        color: white;
+        border-color: #5a7a78;
+      }
+
+      .vote-btn.disliked {
+        background: linear-gradient(135deg, #c9b9a3 0%, #b5a692 100%);
+        color: white;
+        border-color: #c9b9a3;
+      }
+
+      .vote-btn .icon {
+        font-size: 20px;
+      }
+
+      .vote-btn .count {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .vote-section .separator {
+        color: #c9b9a3;
+        font-size: 14px;
+      }
+
+      .login-to-vote {
+        color: #8b8b8b;
+        font-size: 14px;
+        font-style: italic;
+      }
+
+      .login-to-vote a {
+        color: #5a7a78;
+        text-decoration: none;
+        font-weight: 600;
+      }
+
+      .login-to-vote a:hover {
+        text-decoration: underline;
+      }
+
       /* Override form-control for textarea in comments */
       .comment-form-section .form-control {
         width: 100%;
@@ -470,6 +544,34 @@
 
       <div class="post-content">
         <div class="content">{{ post.content }}</div>
+
+        <!-- Like/Dislike Section -->
+        <div class="vote-section">
+          {% if user.is_authenticated %}
+            <a href="{% url 'like_post' post.slug %}" class="vote-btn {% if user in post.likes.all %}liked{% endif %}">
+              <span class="icon">👍</span>
+              <span class="count">{{ post.total_likes }}</span>
+            </a>
+            <span class="separator">|</span>
+            <a href="{% url 'dislike_post' post.slug %}" class="vote-btn {% if user in post.dislikes.all %}disliked{% endif %}">
+              <span class="icon">👎</span>
+              <span class="count">{{ post.total_dislikes }}</span>
+            </a>
+          {% else %}
+            <div class="vote-btn">
+              <span class="icon">👍</span>
+              <span class="count">{{ post.total_likes }}</span>
+            </div>
+            <span class="separator">|</span>
+            <div class="vote-btn">
+              <span class="icon">👎</span>
+              <span class="count">{{ post.total_dislikes }}</span>
+            </div>
+            <span class="login-to-vote">
+              <a href="{% url 'login' %}">Sign in</a> to vote
+            </span>
+          {% endif %}
+        </div>
 
         <hr />
 

@@ -13,12 +13,20 @@ class Post(models.Model):
     status = models.IntegerField(choices=((0, 'Draft'), (1, 'Published')), default=0)
     excerpt = models.TextField(blank=True)
     featured_image = models.ImageField(upload_to='blog_images/', blank=True, null=True)
+    likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
+    dislikes = models.ManyToManyField(User, related_name='post_dislikes', blank=True)
 
     class Meta:
         ordering = ['-created_on']
 
     def __str__(self):
         return self.title
+    
+    def total_likes(self):
+        return self.likes.count()
+    
+    def total_dislikes(self):
+        return self.dislikes.count()
 
 
 class Comment(models.Model):

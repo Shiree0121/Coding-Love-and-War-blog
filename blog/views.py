@@ -2,7 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.urls import reverse
 from .models import Post, Comment
 from .forms import PostForm, RegisterForm, LoginForm, CommentForm
 
@@ -119,3 +120,35 @@ def user_logout(request):
     logout(request)
     messages.info(request, 'You have been logged out.')
     return redirect('home')
+
+
+@login_required
+def like_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    
+    # If user already liked, remove like
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        # Add like and remove dislike if exists
+        post.likes.add(request.user)
+        if post.dislikes.filter(id=request.user.id).exists():
+            post.dislikes.remove(request.user)
+    
+    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+
+
+@login_required
+def dislike_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    
+    # If user already disliked, remove dislike
+    if post.dislikes.filter(id=request.user.id).exists():
+        post.dislikes.remove(request.user)
+    else:
+        # Add dislike and remove like if exists
+        post.dislikes.add(request.user)
+        if post.likes.filter(id=request.user.id).exists():
+            post.likes.remove(request.user)
+    
+    return HttpResponseRedirect(reverse('post_detail', args=[slug]))
