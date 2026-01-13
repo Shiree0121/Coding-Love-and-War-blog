@@ -54,11 +54,28 @@ def edit_post(request, slug):
         form = PostForm(request.POST, request.FILES, instance=post)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Your post has been updated!')
             return redirect('post_detail', slug=post.slug)
     else:
         form = PostForm(instance=post)
     
     return render(request, 'blog/edit_post.html', {'form': form, 'post': post})
+
+
+@login_required
+def create_post(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.save()
+            messages.success(request, 'Your post has been created successfully!')
+            return redirect('post_detail', slug=post.slug)
+    else:
+        form = PostForm()
+    
+    return render(request, 'blog/create_post.html', {'form': form})
 
 def home_page_view(request):
     return render(request, 'blog/home.html')

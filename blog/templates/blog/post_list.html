@@ -1,5 +1,5 @@
-{% extends "blog/base.html" %} {% block title %}Blog Posts - Coding, Love &
-War{% endblock %} {% block extra_css %}
+{% extends "blog/base.html" %} {% block title %} Blog Posts - Coding, Love & War
+{% endblock %} {% block extra_css %}
 <style>
   * {
     margin: 0;
@@ -108,6 +108,27 @@ War{% endblock %} {% block extra_css %}
     box-shadow: 0 10px 20px rgba(139, 115, 85, 0.3);
   }
 
+  .post-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .edit-btn {
+    padding: 8px 14px;
+    background: #5a7a78;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+  }
+
+  .edit-btn:hover {
+    background: #4a6a68;
+    transform: translateY(-2px);
+  }
+
   .empty {
     text-align: center;
     padding: 60px 24px;
@@ -150,9 +171,14 @@ War{% endblock %} {% block extra_css %}
       <p class="excerpt">
         {{ post.excerpt|default:post.content|truncatewords:24 }}
       </p>
-      <a class="read-more" href="{% url 'post_detail' slug=post.slug %}"
-        >Read more</a
-      >
+      <div class="post-actions">
+        <a class="read-more" href="{% url 'post_detail' slug=post.slug %}"
+          >Read more</a
+        >
+        {% if user == post.author %}
+        <a class="edit-btn" href="{% url 'edit_post' slug=post.slug %}">Edit</a>
+        {% endif %}
+      </div>
     </article>
     {% endfor %}
   </div>
