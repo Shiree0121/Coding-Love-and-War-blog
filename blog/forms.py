@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
-from .models import Post
+from .models import Post, Comment
 
 
 class RegisterForm(UserCreationForm):
@@ -48,4 +48,17 @@ class PostForm(forms.ModelForm):
             'excerpt': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'featured_image': forms.FileInput(attrs={'class': 'form-control'}),
             'status': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['body']
+        widgets = {
+            'body': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 4,
+                'placeholder': 'Share your thoughts...'
+            }),
         }

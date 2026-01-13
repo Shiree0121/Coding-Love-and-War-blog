@@ -3,8 +3,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import Http404
-from .models import Post
-from .forms import PostForm, RegisterForm, LoginForm
+from .models import Post, Comment
+from .forms import PostForm, RegisterForm, LoginForm, CommentForm
 
 # Create your views here.
 
@@ -19,7 +19,27 @@ def post_list(request):
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug, status=1)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    comment_form = CommentForm()
+    
+    # Handle comment submission
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.warning(request, 'You must be logged in to comment.')
+            return redirect('login')
+        
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            messages.success(request, 'Your comment has been posted! It will appear once approved.')
+            return redirect('post_detail', slug=post.slug)
+    
+    return render(request, 'blog/post_detail.html', {
+        'post': post,
+        'comment_form': comment_form
+    })
 
 
 @login_required
@@ -65,18 +85,15 @@ def user_login(request):
     if request.user.is_authenticated:
         return redirect('home')
     
+    form = LoginForm(request)
+    
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
-            if user is not None:
-                login(request, user)
-                messages.success(request, f'Welcome back, {username}!')
-                return redirect('home')
-    else:
-        form = LoginForm()
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, f'Welcome back, {user.username}!')
+            return redirect('home')
     
     return render(request, 'blog/login.html', {'form': form})
 

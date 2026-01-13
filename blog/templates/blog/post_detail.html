@@ -318,6 +318,107 @@
         margin-bottom: 5px;
       }
 
+      /* Form Control Styles */
+      .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e8ddd0;
+        border-radius: 6px;
+        font-size: 15px;
+        font-family: Georgia, serif;
+        resize: vertical;
+        transition: all 0.3s ease;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #5a7a78;
+        box-shadow: 0 0 0 3px rgba(90, 122, 120, 0.1);
+      }
+
+      /* Comment Form Styles */
+      .comment-form-section {
+        margin-top: 40px;
+        padding: 30px;
+        background: #faf9f6;
+        border-radius: 8px;
+      }
+
+      .comment-form-section h4 {
+        font-size: 18px;
+        color: #1a1a1a;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      .comment-form-section label {
+        display: block;
+        font-weight: 600;
+        color: #2c2c2c;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      /* Override form-control for textarea in comments */
+      .comment-form-section .form-control {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e8ddd0;
+        border-radius: 6px;
+        font-size: 15px;
+        font-family: Georgia, serif;
+        resize: vertical;
+        transition: all 0.3s ease;
+      }
+
+      .comment-form-section button {
+        margin-top: 12px;
+        padding: 12px 28px;
+        background: linear-gradient(135deg, #5a7a78 0%, #4a6a68 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .comment-form-section button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(90, 122, 120, 0.25);
+      }
+
+      .login-prompt {
+        text-align: center;
+        padding: 30px;
+        background: #faf9f6;
+        border-radius: 8px;
+        margin-top: 40px;
+      }
+
+      .login-prompt p {
+        color: #5a5046;
+        margin-bottom: 16px;
+      }
+
+      .login-prompt a {
+        display: inline-block;
+        padding: 10px 24px;
+        background: linear-gradient(135deg, #5a7a78 0%, #4a6a68 100%);
+        color: white;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        margin: 0 8px;
+        transition: all 0.3s ease;
+      }
+
+      .login-prompt a:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(90, 122, 120, 0.25);
+      }
+
       @media (max-width: 768px) {
         h1 {
           font-size: 28px;
@@ -386,6 +487,24 @@
           </div>
           {% endfor %}
         </div>
+
+        <!-- Comment Form Section -->
+        {% if user.is_authenticated %}
+        <div class="comment-form-section">
+          <h4>Leave a Comment</h4>
+          <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <button type="submit">Post Comment</button>
+          </form>
+        </div>
+        {% else %}
+        <div class="login-prompt">
+          <p>Want to join the discussion? Please sign in to leave a comment.</p>
+          <a href="{% url 'login' %}">Sign In</a>
+          <a href="{% url 'register' %}">Create Account</a>
+        </div>
+        {% endif %}
       </div>
     </div>
 
