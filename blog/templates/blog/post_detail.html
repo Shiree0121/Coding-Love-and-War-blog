@@ -259,6 +259,10 @@
         border-radius: 4px;
       }
 
+      .close-btn {
+        margin-left: 10px;
+      }
+
       .calendar-grid {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
@@ -396,7 +400,7 @@
         <button onclick="previousMonth()">&lt;</button>
         <h3 id="monthYear"></h3>
         <button onclick="nextMonth()">&gt;</button>
-        <button onclick="closeCalendar()" style="margin-left: 10px">
+        <button onclick="closeCalendar()" class="close-btn">
           &times;
         </button>
       </div>
@@ -408,7 +412,8 @@
     </div>
 
     <script>
-      // Post date information
+      /* eslint-disable */
+      // Post date information (Django template variables)
       const postDate = new Date('{{ post.created_on|date:"Y-m-d H:i" }}');
       const postYear = {{ post.created_on|date:"Y" }};
       const postMonth = {{ post.created_on|date:"n" }} - 1;
