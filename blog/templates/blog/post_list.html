@@ -1,0 +1,217 @@
+{% extends "blog/base.html" %} {% block title %} Blog Posts - Coding, Love & War
+{% endblock %} {% block extra_css %}
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  .page-shell {
+    max-width: 1100px;
+    margin: 40px auto 60px;
+    padding: 0 24px;
+  }
+
+  .hero {
+    background: white;
+    border-radius: 14px;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08);
+    padding: 48px 48px 36px;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-size: 42px;
+    line-height: 1.2;
+    color: #1a1a1a;
+    letter-spacing: -0.4px;
+    margin-bottom: 12px;
+  }
+
+  .hero-sub {
+    color: #7e725d;
+    font-size: 16px;
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .post-card {
+    background: white;
+    border-radius: 12px;
+    padding: 22px 22px 18px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .post-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .post-title {
+    font-size: 20px;
+    color: #1f1a17;
+    text-decoration: none;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .post-title:hover {
+    color: #8b7355;
+  }
+
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #9c8f7b;
+    font-size: 13px;
+  }
+
+  .dot {
+    width: 4px;
+    height: 4px;
+    background: #c9b9a3;
+    border-radius: 50%;
+  }
+
+  .excerpt {
+    color: #3b362f;
+    font-size: 15px;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  .read-more {
+    align-self: flex-start;
+    background: linear-gradient(135deg, #8b7355 0%, #6b5b3a 100%);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    box-shadow: 0 6px 16px rgba(139, 115, 85, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .read-more:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(139, 115, 85, 0.3);
+  }
+
+  .post-actions {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .edit-btn {
+    padding: 8px 14px;
+    background: #5a7a78;
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.2s ease;
+  }
+
+  .edit-btn:hover {
+    background: #4a6a68;
+    transform: translateY(-2px);
+  }
+
+  .vote-stats {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+    color: #7e725d;
+    align-items: center;
+  }
+
+  .vote-stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .vote-stat .icon {
+    font-size: 14px;
+  }
+
+  .empty {
+    text-align: center;
+    padding: 60px 24px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+    color: #9c8f7b;
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 32px 24px 26px;
+    }
+
+    h1 {
+      font-size: 30px;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="page-shell">
+  <div class="hero">
+    <h1>Blog Posts</h1>
+    <p class="hero-sub">Stories, lessons, and wins from the coding journey.</p>
+  </div>
+
+  {% if posts %}
+  <div class="post-grid">
+    {% for post in posts %}
+    <article class="post-card">
+      <a class="post-title" href="{% url 'post_detail' slug=post.slug %}"
+        >{{ post.title }}</a
+      >
+      <div class="post-meta">
+        <span>{{ post.created_on|date:"F j, Y" }}</span>
+        <div class="dot"></div>
+        <span>by {{ post.author.username }}</span>
+      </div>
+      <div class="vote-stats">
+        <span class="vote-stat">
+          <span class="icon">👍</span>
+          <span>{{ post.total_likes }}</span>
+        </span>
+        <span class="vote-stat">
+          <span class="icon">👎</span>
+          <span>{{ post.total_dislikes }}</span>
+        </span>
+      </div>
+      <p class="excerpt">
+        {{ post.excerpt|default:post.content|truncatewords:24 }}
+      </p>
+      <div class="post-actions">
+        <a class="read-more" href="{% url 'post_detail' slug=post.slug %}"
+          >Read more</a
+        >
+        {% if user == post.author %}
+        <a class="edit-btn" href="{% url 'edit_post' slug=post.slug %}">Edit</a>
+        {% endif %}
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="empty">No published posts yet.</div>
+  {% endif %}
+</div>
+{% endblock %}

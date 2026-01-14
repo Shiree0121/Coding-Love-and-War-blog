@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Coding, Love & War{% endblock %}</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Georgia", "Garamond", serif;
+        background: linear-gradient(135deg, #f5f1e8 0%, #e8ddd0 100%);
+        color: #2c2c2c;
+        line-height: 1.8;
+        min-height: 100vh;
+      }
+
+      /* Navigation Bar */
+      nav {
+        background: white;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 64px;
+      }
+
+      .nav-brand {
+        font-size: 24px;
+        font-weight: 700;
+        color: #1a1a1a;
+        text-decoration: none;
+        letter-spacing: -0.5px;
+      }
+
+      .nav-brand:hover {
+        color: #8b7355;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 30px;
+        align-items: center;
+        list-style: none;
+      }
+
+      .nav-links a {
+        color: #2c2c2c;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+        border-bottom: 2px solid transparent;
+        padding-bottom: 4px;
+      }
+
+      .nav-links a:hover {
+        color: #8b7355;
+        border-bottom-color: #c9b9a3;
+      }
+
+      .nav-links a.active {
+        color: #8b7355;
+        border-bottom-color: #8b7355;
+      }
+
+      .auth-buttons {
+        display: flex;
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 8px 16px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #5a7a78 0%, #4a6a68 100%);
+        color: white;
+        box-shadow: 0 4px 12px rgba(90, 122, 120, 0.2);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 16px rgba(90, 122, 120, 0.3);
+      }
+
+      .btn-secondary {
+        background: #f0ede5;
+        color: #2c2c2c;
+      }
+
+      .btn-secondary:hover {
+        background: #e8ddd0;
+      }
+
+      .welcome {
+        color: #7e725d;
+        font-size: 14px;
+      }
+
+      .user-menu {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      /* Messages */
+      .messages {
+        max-width: 1200px;
+        margin: 20px auto;
+        padding: 0 24px;
+      }
+
+      .alert {
+        padding: 12px 20px;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        font-size: 14px;
+      }
+
+      .alert-success {
+        background: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .alert-info {
+        background: #d1ecf1;
+        color: #0c5460;
+        border: 1px solid #bee5eb;
+      }
+
+      .alert-error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      /* Main Content */
+      main {
+        min-height: calc(100vh - 64px);
+      }
+
+      @media (max-width: 768px) {
+        .nav-container {
+          height: 56px;
+        }
+
+        .nav-brand {
+          font-size: 18px;
+        }
+
+        .nav-links {
+          gap: 16px;
+        }
+
+        .auth-buttons {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .btn {
+          padding: 6px 12px;
+          font-size: 12px;
+        }
+      }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <nav>
+      <div class="nav-container">
+        <a href="{% url 'home' %}" class="nav-brand">Coding, Love & War</a>
+
+        <ul class="nav-links">
+          <li><a href="{% url 'home' %}">Home</a></li>
+          <li><a href="{% url 'post_list' %}">Blog</a></li>
+          {% if user.is_authenticated %}
+          <li><a href="{% url 'create_post' %}">Create Post</a></li>
+          {% endif %}
+        </ul>
+
+        <div class="auth-buttons">
+          {% if user.is_authenticated %}
+          <div class="user-menu">
+            <span class="welcome">Welcome, {{ user.username }}!</span>
+            <a href="{% url 'logout' %}" class="btn btn-secondary">Logout</a>
+          </div>
+          {% else %}
+          <a href="{% url 'login' %}" class="btn btn-secondary">Login</a>
+          <a href="{% url 'register' %}" class="btn btn-primary">Sign Up</a>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+
+    {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>
