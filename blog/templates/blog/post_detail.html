@@ -370,6 +370,11 @@
         margin: 30px 0;
       }
 
+      .vote-section form {
+        display: inline-block;
+        margin: 0;
+      }
+
       .vote-btn {
         display: flex;
         align-items: center;
@@ -384,6 +389,7 @@
         transition: all 0.3s ease;
         text-decoration: none;
         color: #5a5046;
+        font-family: "Georgia", "Garamond", serif;
       }
 
       .vote-btn:hover {
@@ -548,7 +554,7 @@
         <!-- Like/Dislike Section -->
         <div class="vote-section">
           {% if user.is_authenticated %}
-            <form method="post" action="{% url 'like_post' post.slug %}" style="display: inline;">
+            <form method="post" action="{% url 'like_post' post.slug %}">
               {% csrf_token %}
               <button type="submit" class="vote-btn {% if user in post.likes.all %}liked{% endif %}">
                 <span class="icon">👍</span>
@@ -556,7 +562,7 @@
               </button>
             </form>
             <span class="separator">|</span>
-            <form method="post" action="{% url 'dislike_post' post.slug %}" style="display: inline;">
+            <form method="post" action="{% url 'dislike_post' post.slug %}">
               {% csrf_token %}
               <button type="submit" class="vote-btn {% if user in post.dislikes.all %}disliked{% endif %}">
                 <span class="icon">👎</span>
