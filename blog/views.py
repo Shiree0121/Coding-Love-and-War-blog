@@ -23,6 +23,13 @@ def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug, status=1)
     comment_form = CommentForm()
     
+    # Check if user has liked or disliked
+    user_has_liked = False
+    user_has_disliked = False
+    if request.user.is_authenticated:
+        user_has_liked = post.likes.filter(id=request.user.id).exists()
+        user_has_disliked = post.dislikes.filter(id=request.user.id).exists()
+    
     # Handle comment submission
     if request.method == 'POST':
         if not request.user.is_authenticated:
@@ -40,7 +47,9 @@ def post_detail(request, slug):
     
     return render(request, 'blog/post_detail.html', {
         'post': post,
-        'comment_form': comment_form
+        'comment_form': comment_form,
+        'user_has_liked': user_has_liked,
+        'user_has_disliked': user_has_disliked,
     })
 
 
