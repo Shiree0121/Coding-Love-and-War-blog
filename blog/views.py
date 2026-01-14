@@ -4,6 +4,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from django.http import Http404, HttpResponseRedirect
 from django.urls import reverse
+from django.utils.text import slugify
 from .models import Post, Comment
 from .forms import PostForm, RegisterForm, LoginForm, CommentForm
 
@@ -70,6 +71,18 @@ def create_post(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
+            
+            # Generate slug from title
+            base_slug = slugify(post.title)
+            slug = base_slug
+            counter = 1
+            
+            # Ensure slug is unique
+            while Post.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            
+            post.slug = slug
             post.save()
             messages.success(request, 'Your post has been created successfully!')
             return redirect('post_detail', slug=post.slug)
