@@ -41,6 +41,11 @@ ALLOWED_HOSTS = [
     if host.strip()
 ] or ['.herokuapp.com', 'localhost', '127.0.0.1']
 
+# CSRF Trusted Origins for HTTPS
+CSRF_TRUSTED_ORIGINS = [
+    'https://coding-love-and-war-0c105e3f0a5a.herokuapp.com',
+]
+
 
 # Application definition
 
