@@ -176,3 +176,43 @@ def dislike_post(request, slug):
                 post.likes.remove(request.user)
     
     return HttpResponseRedirect(reverse('post_detail', args=[slug]))
+
+
+@login_required
+def edit_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    
+    # Only allow the author to edit their own comment
+    if request.user != comment.author:
+        raise Http404("You don't have permission to edit this comment.")
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            # Reset approval status when edited
+            edited_comment = form.save(commit=False)
+            edited_comment.approved = False
+            edited_comment.save()
+            messages.success(request, 'Your comment has been updated and is awaiting approval.')
+            return redirect('post_detail', slug=comment.post.slug)
+    else:
+        form = CommentForm(instance=comment)
+    
+    return render(request, 'blog/edit_comment.html', {'form': form, 'comment': comment})
+
+
+@login_required
+def delete_comment(request, comment_id):
+    comment = get_object_or_404(Comment, id=comment_id)
+    
+    # Only allow the author to delete their own comment
+    if request.user != comment.author:
+        raise Http404("You don't have permission to delete this comment.")
+    
+    if request.method == 'POST':
+        post_slug = comment.post.slug
+        comment.delete()
+        messages.success(request, 'Your comment has been deleted.')
+        return redirect('post_detail', slug=post_slug)
+    
+    return redirect('post_detail', slug=comment.post.slug)
