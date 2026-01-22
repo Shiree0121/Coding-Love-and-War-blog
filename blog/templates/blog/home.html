@@ -1,4 +1,5 @@
-{% extends "blog/base.html" %} {% block title %}Home - Coding, Love & War{%endblock %} {% block extra_css %}
+{% extends "blog/base.html" %} {% block title %}Home - Coding, Love &
+War{%endblock %} {% block extra_css %}
 <style>
   .hero-banner {
     width: 100%;
@@ -182,30 +183,51 @@
 
   @media (max-width: 768px) {
     .hero-banner {
-      height: 350px;
+      height: 280px;
       margin-bottom: 40px;
+      padding: 20px 0;
     }
 
     .hero-content {
-      left: 24px;
-      max-width: calc(100% - 48px);
+      left: 16px;
+      right: 16px;
+      max-width: calc(100% - 32px);
     }
 
     .hero-content h1 {
-      font-size: 40px;
+      font-size: 32px;
+      margin-bottom: 12px;
     }
 
     .hero-content p {
-      font-size: 16px;
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .hero-content a {
+      padding: 10px 20px;
+      font-size: 14px;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
     }
 
     .section-title {
-      font-size: 24px;
+      font-size: 22px;
+      margin-bottom: 24px;
     }
 
     .posts-grid {
       grid-template-columns: 1fr;
-      gap: 20px;
+      gap: 16px;
+    }
+
+    .post-card-image {
+      height: 160px;
+    }
+
+    .blog-section {
+      padding: 0 16px;
     }
   }
 </style>

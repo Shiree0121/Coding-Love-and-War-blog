@@ -546,24 +546,39 @@
 
       @media (max-width: 768px) {
         h1 {
-          font-size: 28px;
+          font-size: 26px;
+          margin-bottom: 16px;
         }
 
         .post-header {
-          padding: 30px 20px;
+          padding: 24px 16px 20px;
         }
 
         .post-content {
-          padding: 20px;
+          padding: 20px 16px;
         }
 
         .meta {
           flex-direction: column;
           gap: 8px;
+          font-size: 13px;
         }
 
         .container {
-          margin: 20px auto;
+          margin: 16px 0;
+          padding: 0;
+          border-radius: 0;
+          box-shadow: none;
+        }
+
+        .calendar-btn {
+          min-height: 44px;
+          padding: 8px 12px;
+          font-size: 12px;
+        }
+
+        button, a {
+          min-height: 44px;
         }
       }
     </style>
@@ -590,7 +605,7 @@
 
       {% if post.featured_image %}
       <div class="featured-image-wrapper">
-        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" />
+        <img src="{{ post.featured_image.url }}" alt="{{ post.title }}" loading="lazy" width="750" height="400" />
       </div>
       {% endif %}
 

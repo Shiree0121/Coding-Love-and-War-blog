@@ -3,7 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Coding, Love & War - A full-stack developer's journey"
+    />
+    <meta name="theme-color" content="#5a7a78" />
     <title>{% block title %}Coding, Love & War{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     <style>
       * {
         margin: 0;
@@ -17,6 +24,7 @@
         color: #2c2c2c;
         line-height: 1.8;
         min-height: 100vh;
+        font-display: swap;
       }
 
       /* Navigation Bar */
@@ -165,6 +173,7 @@
       @media (max-width: 768px) {
         .nav-container {
           height: 56px;
+          padding: 0 16px;
         }
 
         .nav-brand {
@@ -172,7 +181,8 @@
         }
 
         .nav-links {
-          gap: 16px;
+          gap: 12px;
+          font-size: 14px;
         }
 
         .auth-buttons {
@@ -181,8 +191,13 @@
         }
 
         .btn {
-          padding: 6px 12px;
-          font-size: 12px;
+          padding: 8px 14px;
+          font-size: 13px;
+          min-height: 44px;
+        }
+
+        body {
+          font-size: 16px;
         }
       }
     </style>
@@ -215,6 +230,17 @@
         </div>
       </div>
     </nav>
+
+    <script>
+      // Optimize LCP by preloading hero content
+      if ("requestIdleCallback" in window) {
+        requestIdleCallback(() => {
+          document.querySelectorAll("img").forEach((img) => {
+            if (img.loading !== "lazy") img.loading = "lazy";
+          });
+        });
+      }
+    </script>
 
     {% if messages %}
     <div class="messages">
