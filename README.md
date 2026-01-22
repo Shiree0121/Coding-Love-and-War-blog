@@ -1,16 +1,17 @@
 # Coding-Love-and-War-blog
 
 # Introduction 
-Coding, Love & War is a full-stack blog application developed using Django as part of the Full-Stack course. The purpose of this project is to demonstrate the practical application of full-stack development principles, including backend logic, database design, and user interaction.
+Coding, Love & War is a full-stack blog application developed using Django, Python, HTML and CSS as part of the Full-Stack course. The purpose of this project is to demonstrate the practical application of full-stack development principles, including backend logic, database design, and user interaction.
 
-The design focuses on creating an aesthetically pleasing and easy-to-navigate interactive blog. The application allows registured users to register an account, log in, view blog posts, and create comments, with the option to edit or delete their own content. The blog itself documents the struggles of a beginner coder on her journey through learning full-stack development.
-
-The project showcases the steps taken day by day to complete the application within a healthy timeframe, while highlighting the challenges, learning curves, and problem-solving involved throughout the development process.
+ The application allows registured users to register an account, log in, view blog posts, and create comments, with the option to edit or delete their own content. The blog itself documents the struggles of a beginner coder on her journey through learning full-stack development.
 
 # Compatability  
-
+![alt text](image-5.png)
+This image was captured using https://fireship.dev/amiresponsive and demonstrates that the website is responsive across a range of devices.
 # UX design
+The design focuses on creating an aesthetically pleasing and easy-to-navigate interactive blog.
 
+I decided to go with the color theme of 
 # Wireframes
 My initial intention for this project was to create wireframes using Balsamiq in order to plan the layout and user flow of the application. However, once the free trial expired, this option was no longer available. I then explored alternative ways to visualise my ideas and was given the option to use an AI design tool in Balsamiq.
 

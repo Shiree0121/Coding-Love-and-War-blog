@@ -11,7 +11,8 @@ from .forms import PostForm, RegisterForm, LoginForm, CommentForm
 # Create your views here.
 
 def home(request):
-    return render(request, 'blog/home.html')
+    posts = Post.objects.filter(status=1).order_by('-created_on')[:3]
+    return render(request, 'blog/home.html', {'posts': posts})
 
 
 def post_list(request):
@@ -125,8 +126,6 @@ def user_login(request):
     if request.user.is_authenticated:
         return redirect('home')
     
-    form = LoginForm(request)
-    
     if request.method == 'POST':
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
@@ -134,6 +133,8 @@ def user_login(request):
             login(request, user)
             messages.success(request, f'Welcome back, {user.username}!')
             return redirect('home')
+    else:
+        form = LoginForm(request)
     
     return render(request, 'blog/login.html', {'form': form})
 

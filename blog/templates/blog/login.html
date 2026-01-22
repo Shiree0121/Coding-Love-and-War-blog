@@ -1,5 +1,8 @@
-{% extends "blog/base.html" %} {% block title %}Login - Coding, Love & War{%
-endblock %} {% block extra_css %}
+{% extends "blog/base.html" %}
+
+{% block title %}Login - Coding, Love & War{% endblock %}
+
+{% block extra_css %}
 <style>
   .auth-container {
     max-width: 480px;
@@ -103,7 +106,9 @@ endblock %} {% block extra_css %}
     color: #4a6a68;
   }
 </style>
-{% endblock %} {% block content %}
+{% endblock %}
+
+{% block content %}
 <div class="auth-container">
   <div class="auth-card">
     <h2>Welcome Back</h2>
@@ -114,7 +119,8 @@ endblock %} {% block extra_css %}
 
       <div class="form-group">
         <label for="{{ form.username.id_for_label }}">Username</label>
-        {{ form.username }} {% if form.username.errors %}
+        {{ form.username }}
+        {% if form.username.errors %}
         <ul class="errorlist">
           {% for error in form.username.errors %}
           <li>{{ error }}</li>
@@ -125,7 +131,8 @@ endblock %} {% block extra_css %}
 
       <div class="form-group">
         <label for="{{ form.password.id_for_label }}">Password</label>
-        {{ form.password }} {% if form.password.errors %}
+        {{ form.password }}
+        {% if form.password.errors %}
         <ul class="errorlist">
           {% for error in form.password.errors %}
           <li>{{ error }}</li>
