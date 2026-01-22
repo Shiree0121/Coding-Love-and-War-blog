@@ -1,0 +1,181 @@
+{% extends "blog/base.html" %} {% block title %}Edit Comment - Coding, Love &
+War{% endblock %} {% block extra_css %}
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: "Georgia", "Garamond", serif;
+    background: linear-gradient(135deg, #f5f1e8 0%, #e8ddd0 100%);
+    color: #2c2c2c;
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 750px;
+    margin: 60px auto;
+    padding: 40px;
+    background: white;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+  }
+
+  h1 {
+    font-size: 32px;
+    color: #1a1a1a;
+    margin-bottom: 10px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    color: #8b8b8b;
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+
+  .back-link {
+    display: inline-block;
+    color: #5a7a78;
+    text-decoration: none;
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: 500;
+  }
+
+  .back-link:hover {
+    text-decoration: underline;
+  }
+
+  form {
+    margin-top: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e8ddd0;
+    border-radius: 6px;
+    font-size: 15px;
+    font-family: Georgia, serif;
+    resize: vertical;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #5a7a78;
+    box-shadow: 0 0 0 3px rgba(90, 122, 120, 0.1);
+  }
+
+  textarea.form-control {
+    min-height: 150px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+  }
+
+  .btn {
+    padding: 12px 28px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: Georgia, serif;
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #5a7a78 0%, #4a6a68 100%);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(90, 122, 120, 0.25);
+  }
+
+  .btn-secondary {
+    background: #f0ede5;
+    color: #2c2c2c;
+  }
+
+  .btn-secondary:hover {
+    background: #e8ddd0;
+  }
+
+  .help-text {
+    font-size: 13px;
+    color: #8b8b8b;
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .container {
+      margin: 20px;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+    }
+
+    .btn-group {
+      flex-direction: column;
+    }
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="container">
+  <a href="{% url 'post_detail' comment.post.slug %}" class="back-link"
+    >← Back to Post</a
+  >
+
+  <h1>Edit Your Comment</h1>
+  <p class="subtitle">on "{{ comment.post.title }}"</p>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="{{ comment_form.body.id_for_label }}">Comment</label>
+      {{ form.body }}
+      <p class="help-text">
+        Your edited comment will need to be re-approved before it appears.
+      </p>
+    </div>
+
+    <div class="btn-group">
+      <button type="submit" class="btn btn-primary">Update Comment</button>
+      <a
+        href="{% url 'post_detail' comment.post.slug %}"
+        class="btn btn-secondary"
+        >Cancel</a
+      >
+    </div>
+  </form>
+</div>
+{% endblock %}
