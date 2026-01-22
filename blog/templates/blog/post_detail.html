@@ -582,6 +582,7 @@
           {% if user == post.author %}
           <div class="edit-link">
             | <a href="{% url 'edit_post' slug=post.slug %}">Edit</a>
+            | <a href="{% url 'delete_post' slug=post.slug %}">Delete</a>
           </div>
           {% endif %}
         </div>

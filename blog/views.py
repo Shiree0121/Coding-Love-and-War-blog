@@ -11,12 +11,12 @@ from .forms import PostForm, RegisterForm, LoginForm, CommentForm
 # Create your views here.
 
 def home(request):
-    posts = Post.objects.filter(status=1).order_by('-created_on')[:3]
+    posts = Post.objects.filter(status=1, slug__isnull=False).exclude(slug='').order_by('-created_on')[:3]
     return render(request, 'blog/home.html', {'posts': posts})
 
 
 def post_list(request):
-    posts = Post.objects.filter(status=1).order_by('-created_on')
+    posts = Post.objects.filter(status=1, slug__isnull=False).exclude(slug='').order_by('-created_on')
     return render(request, 'blog/post_list.html', {'posts': posts})
 
 
@@ -75,6 +75,22 @@ def edit_post(request, slug):
 
 
 @login_required
+def delete_post(request, slug):
+    post = get_object_or_404(Post, slug=slug)
+    
+    # Only allow the author to delete their own post
+    if request.user != post.author:
+        raise Http404("You don't have permission to delete this post.")
+    
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, 'Your post has been deleted.')
+        return redirect('post_list')
+    
+    return render(request, 'blog/delete_post.html', {'post': post})
+
+
+@login_required
 def create_post(request):
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES)
@@ -83,7 +99,15 @@ def create_post(request):
             post.author = request.user
             
             # Generate slug from title
+            if not post.title or not post.title.strip():
+                messages.error(request, 'Title cannot be empty.')
+                return render(request, 'blog/create_post.html', {'form': form})
+            
             base_slug = slugify(post.title)
+            if not base_slug:
+                messages.error(request, 'Title must contain valid characters.')
+                return render(request, 'blog/create_post.html', {'form': form})
+            
             slug = base_slug
             counter = 1
             
