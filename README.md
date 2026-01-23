@@ -13,18 +13,22 @@ The design focuses on creating an aesthetically pleasing and easy-to-navigate in
 
 I wanted the design to feel:
 
-Calm and inviting for readers
+- Calm and inviting for readers
 
-Warm and personal, reflecting my journey and experiences
+- Warm and personal, reflecting my journey and experiences.
 
-Professional but human, so it works for both coding content and personal storytelling
+- Professional but welcoming, so it works for both coding content and personal storytelling.
 
-The overall goal is to create a space that feels safe, welcoming, and authentic, not just a technical blog, but a personal one that people actually enjoy spending time on
+![alt text](image-27.png)
+
+I initially gravitated toward earthy tones—browns, greens, and soft beiges—to create a grounded and approachable atmosphere. My goal was to design a space that feels safe, welcoming, and authentic, not just a technical blog, but a personal one that people genuinely enjoy visiting.
+
+I opted for simple, standard fonts to enhance readability and maintain consistency across all devices.
 
 # Wireframes
 My initial intention for this project was to create wireframes using Balsamiq in order to plan the layout and user flow of the application. However, once the free trial expired, this option was no longer available. I then explored alternative ways to visualise my ideas and was given the option to use an AI design tool in Balsamiq.
 
-I chose to use the tool and provided my own prompt, which outlined my original vision for the blog. This included user registration and login functionality, a navigation bar that welcomes the user by name once logged in, blog posts displayed with images, and a comments section where users can add, edit, or delete comments. The design also included a confirmation pop-up to ensure users are aware of their actions and receive feedback when an action has been completed successfully.
+I chose to use the tool and provided my own prompt, which outlined my original vision for the blog. This included user registration and login functionality, a navigation bar that welcomes the user by name once logged in, blog posts displayed with images, and a comments section where users can add, edit, and delete their own comments. The design also included a confirmation pop-up to ensure users are aware of their actions and receive feedback when an action has been completed successfully.
 
 The diagram below was generated based on this prompt and was used as a visual reference to guide the structure, layout, and functionality of the application during development.
 
@@ -120,6 +124,8 @@ Logged-in Users Only:
 - Only registered and logged-in users can like or favorite posts.
 - Guests see the button but are prompted to log in if clicked.
 
+https://github.com/users/Shiree0121/projects/3 this shows the project board used to track progress on user stories and tasks during development.
+
 # Entity Relationship Diagram (ERD)
 
 The ERD represents the database structure for **Coding, Love & War** blog.  
@@ -148,7 +154,7 @@ The homepage displays the most recent published posts along with short excerpts 
 
 ### Commenting System
 
-Registered users can leave comments on blog posts. Comments are not displayed immediately and must be approved by an admin first. Users can edit or delete their own comments, and editing a comment resets its approval status.
+Registered users can leave comments on blog posts. Comments are displayed immediately but can easily be moderated by an admin if needed. Users can edit or delete their own comments.
 ![alt text](image-10.png)
 
 ### Post Engagement
@@ -171,7 +177,7 @@ Posts can be saved as drafts or published when ready. Featured images and excerp
 
 # Testing
 
-Unfortunately, to access the site you must first confirm that you’re happy to proceed, as most browsers currently flag it as a potential phishing site. This is despite me submitting an explanation that the site is safe and is being used for educational purposes only I believe their maybe an issue with the name.
+Unfortunately, to access the site you must first confirm that you’re happy to proceed, as most browsers currently flag it as a potential phishing site. This is despite me submitting an explanation that the site is safe and is being used for educational purposes. I believe their maybe an issue with the name.
 
 ### Manual Testing
 The site was tested on the following browsers for compatibility:
@@ -213,30 +219,30 @@ The site was tested on the following browsers for compatibility:
 
 ### Light house
 ![alt text](image-20.png) ![alt text](image-21.png) <-local host>
-My performance score for the site is 87% on herko, and on local host it is 96%. While there are opportunities for further optimisation, I managed to get the score from initially showing 71% upwards. It was advised to run lighthouse in chrome incognito to 'eliminate extensions affecting results". 
+My performance score for the site is 87% on herko, and on local host it is 96%. While there are opportunities for further optimisation, I managed to get the score from initially showing 71% upwards, this was by reduced hero banner height from 350px to 280px on mobile, to help with (faster rendering).  It was also advised to run lighthouse in 'chrome incognito' to 'eliminate extensions affecting results". 
 
 ### Responsive Testing
 Alongside the built in Bootstrap responsive CSS, Chrome dev tools were used frequently to test the site at standard screen sizes and the site was manually viewed on laptops, tablets and phones.
 
-### Validator Testing
+# Validator Testing
 
 ### HTML
 The HTML code passes validation with no errors when checked using the official W3C validator.
 ![alt text](image-22.png)
 
 ### CSS
-No errors were found with our own CSS code when passing through the official Jigsaw validator.
+No errors were found when validated using the official Jigsaw tool.
 ![](image-23.png)
 
 ### Python
-I checked the busys files which was veiws and they came back with no errors.
+After checking the views files carefully, I can confirm that no errors were found.
 ![alt text](image-26.png)
 
 # Deployment
 
 The site was deployed to Heroku from the main branch of the repository early in the development stage for continuous deployment and checking.
 
-The Heroku app is setup with 3 environment variables, repalcing the environment variables stored in env.py (which doesn't get pushed to github).
+The Heroku app is setup with 3 environment variables, replacing the environment variables stored in env.py (which doesn't get pushed to github).
 
 In order to create an Heroku app:
 
@@ -248,18 +254,24 @@ In order to create an Heroku app:
 
 - In your app settings, click on "Reveal Config Vars" and add the environment variables for your app. These are:
 
-DATABASE_URL - your database connection string
-SECRET_Key - the secret key for your app
-CLOUDINARY_URL - the cloudinary url for your image store
-The PostgreSQL database is served from ElephantSQL
+- DATABASE_URL - your database connection string
+- SECRET_Key - the secret key for your app
+- CLOUDINARY_URL - the cloudinary url for your image store
+- The PostgreSQL database is served from ElephantSQL
 
 Once the app setup is complete, click on the Deploy tab and:
 
-connect to the required GitHub account
-select the repository to deploy from
-click the Deploy Branch button to start the deployment.
-Once deployment finishes the app can be launched.
+- Connect to the required GitHub account
+- Select the repository to deploy from
+- Click the Deploy Branch button to start the deployment.
+- Once deployment finishes the app can be launched.
 ![alt text](image-24.png)![alt text](image-25.png)
 
 # Reflection
-During my coding journey while creating this application, AI has been an great tool for support. It has contributed towards my accuracy and provided instant guidance. Whenever I was uncertain about something, AI helped break it down in a way that was easier to understand, making learning and problem-solving much more efficient.
+During my coding journey while creating this application, AI has been a great tool for support. It has contributed towards my accuracy and provided instant guidance. Whenever I was uncertain about something, AI helped break it down in a way that was easier to understand, making learning and problem-solving much more efficient.
+
+# Credits 
+This project is based on the "I Think Therefore I Blog" project from the Code Institute (LMS).
+## Content
+- All code was written by me, Shiree White, apart from snippets provided in the course material.
+- Blog content is based on my personal coding journey and experiences.
