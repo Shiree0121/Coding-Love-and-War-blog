@@ -212,27 +212,25 @@ The site was tested on the following browsers for compatibility:
 | Open new page from social media links  | Success         | Success       |
 
 ### Light house
-![alt text](image-19.png)
-My performance score for the site is 71%. While there are opportunities for further optimisation, no changes were made at this stage to avoid the risk of breaking existing functionality. Some layout issues are present on smaller screen devices, which have been acknowledged but not addressed within the current scope of the project.
+![alt text](image-20.png) ![alt text](image-21.png) <-local host>
+My performance score for the site is 87% on herko, and on local host it is 96%. While there are opportunities for further optimisation, I managed to get the score from initially showing 71% upwards. It was advised to run lighthouse in chrome incognito to 'eliminate extensions affecting results". 
 
 ### Responsive Testing
 Alongside the built in Bootstrap responsive CSS, Chrome dev tools were used frequently to test the site at standard screen sizes and the site was manually viewed on laptops, tablets and phones.
 
 ### Validator Testing
-HTML
 
+### HTML
+The HTML code passes validation with no errors when checked using the official W3C validator.
+![alt text](image-22.png)
 
+### CSS
+No errors were found with our own CSS code when passing through the official Jigsaw validator.
+![](image-23.png)
 
-
-
-
-
-
-
-
-
-
-
+### Python
+I checked the busys files which was veiws and they came back with no errors.
+![alt text](image-26.png)
 
 # Deployment
 
@@ -242,13 +240,13 @@ The Heroku app is setup with 3 environment variables, repalcing the environment 
 
 In order to create an Heroku app:
 
-Click on New in the Heroku dashboard, and Create new app from the menu dropdown.
+- Click on New in the Heroku dashboard, and Create new app from the menu dropdown.
 
-Give your new app a unique name, and choose a region, preferably one that is geographically closest to you.
+- Give your new app a unique name, and choose a region, preferably one that is geographically closest to you.
 
-Click "Create app"
+- Click "Create app"
 
-In your app settings, click on "Reveal Config Vars" and add the environment variables for your app. These are:
+- In your app settings, click on "Reveal Config Vars" and add the environment variables for your app. These are:
 
 DATABASE_URL - your database connection string
 SECRET_Key - the secret key for your app
@@ -261,6 +259,7 @@ connect to the required GitHub account
 select the repository to deploy from
 click the Deploy Branch button to start the deployment.
 Once deployment finishes the app can be launched.
+![alt text](image-24.png)![alt text](image-25.png)
 
 # Reflection
-Using the Balsamiq AI tool allowed me to visualise my ideas, not necessarily in a perfect form, but as a strong starting point to build from and translate into a working Django application. This approach supported better time management and helped me understand how to prompt AI effectively to produce something meaningful to work with, while ensuring the project remained aligned with my original vision.
+During my coding journey while creating this application, AI has been an great tool for support. It has contributed towards my accuracy and provided instant guidance. Whenever I was uncertain about something, AI helped break it down in a way that was easier to understand, making learning and problem-solving much more efficient.
