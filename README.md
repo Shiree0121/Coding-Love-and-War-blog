@@ -179,6 +179,12 @@ Posts can be saved as drafts or published when ready. Featured images and excerp
 
 Unfortunately, to access the site you must first confirm that you’re happy to proceed, as most browsers currently flag it as a potential phishing site. This is despite me submitting an explanation that the site is safe and is being used for educational purposes. I believe their maybe an issue with the name.
 
+# Admin access:
+Admins can access the admin panel at `/admin/` to manage posts and comments.
+Username: Mainadmin
+pw: Thursday1
+![alt text](image-28.png)
+
 ### Manual Testing
 The site was tested on the following browsers for compatibility:
 
