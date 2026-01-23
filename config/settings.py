@@ -33,8 +33,8 @@ if not SECRET_KEY:
         "SECRET_KEY environment variable is not set. "
     )
 
-# DEBUG = os.environ.get('DEBUG', 'False') == 'True'
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+
 allowed_hosts_env = os.environ.get('ALLOWED_HOSTS', '')
 ALLOWED_HOSTS = [
     host.strip()
